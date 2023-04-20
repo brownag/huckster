@@ -5,7 +5,7 @@ Version: 0.0.0.9000
 Authors@R: person(given="Andrew", family="Brown", email="andrew.g.brown@usda.gov", role = c("aut", "cre"))
 Maintainer: Andrew Brown <andrew.g.brown@usda.gov>
 Description: Provides tools for easily obtaining boundaries of hydrologic units and information based on Hydrologic Unit Codes ('HUC'). Hydrologic unit data are retrieved from the USGS NationalMap ArcGIS MapServer web services: <"https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/>.
-License: GPL (>= 3)
+License: CC0
 Language: en-US
 Encoding: UTF-8
 RoxygenNote: 7.2.3
