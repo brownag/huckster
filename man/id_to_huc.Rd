@@ -4,11 +4,7 @@
 \alias{id_to_huc}
 \title{Get boundaries for hydrologic unit IDs at the specified level.}
 \usage{
-id_to_huc(
-  x,
-  layerid = 5,
-  base_url = "https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/"
-)
+id_to_huc(x, layerid = 5, base_url = huckster_usgs_hydro_wbd_url())
 }
 \arguments{
 \item{x}{character. Hydrologic Unit IDs}

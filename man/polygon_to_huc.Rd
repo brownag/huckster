@@ -9,7 +9,7 @@ polygon_to_huc(
   layerid = 5,
   sr_in = 4326,
   sr_out = sr_in,
-  base_url = "https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/"
+  base_url = huckster_usgs_hydro_wbd_url()
 )
 }
 \arguments{
@@ -51,6 +51,6 @@ x <- 'POLYGON((-121.355 37.56,-121.355 37.555,
           -121.35 37.555,-121.35 37.56,
           -121.355 37.56))' |>
   terra::vect(crs = "OGC:CRS84")
-polygon_to_huc(x, layerid = 8)
+polygon_to_huc(x, layerid = 6)
 }
 }

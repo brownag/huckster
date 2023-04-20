@@ -13,8 +13,8 @@ boundaries of hydrologic units and other information based on Hydrologic
 Unit Codes (‘HUC’).
 
 Hydrologic unit data are retrieved from the U.S. Geological Survey
-‘NationalMap’ REST API by default. This endpoint can be customized.
-<https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/>.
+‘NationalMap’ REST API by default. This endpoint can be customized:
+\<<https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/>\>.
 
 ## Installation
 
@@ -26,10 +26,10 @@ You can install the development version of {huckster} from
 remotes::install_github("brownag/huckster")
 ```
 
-## Example
+## Examples
 
 Here are some basic examples showing how to obtain hydrologic unit
-boundaries by ID, point, envelope, and polygon.
+boundaries by ID (code), point, envelope, and polygon.
 
 The default `layerid=5` corresponds to a “10-digit” HUC or “Watershed”
 level boundary.
@@ -40,8 +40,11 @@ library(terra)
 #> Warning: package 'terra' was built under R version 4.2.3
 #> terra 1.7.29
 
-ids <- c("071000050101",  "071000050102",  "071000050103",  "071000050104")
+## HUC code input
+ids <- c("071000050101",  "071000050102",
+         "071000050103",  "071000050104")
 w <- id_to_huc(ids, layerid = 6)
+
 plot(w)
 ```
 
@@ -49,7 +52,9 @@ plot(w)
 
 ``` r
 
+## point input
 x <- point_to_huc(-94.0671, 43.026, layerid = 4)
+
 plot(x)
 ```
 
@@ -57,8 +62,12 @@ plot(x)
 
 ``` r
 
-# bounding box/envelope numeric input
+## SpatExtent bounding box/envelope input
 y <- envelope_to_huc(terra::ext(x))
+
+## equivalently using numeric bounds:
+# y <- envelope_to_huc(-94.150, 42.298, -93.636, 43.156)
+
 plot(y)
 ```
 
@@ -66,9 +75,10 @@ plot(y)
 
 ``` r
 
-# SpatVector polygon ('Ditch Number 71' rect extent) as input
-p <- as.polygons(y[1, ], ext = TRUE)
+## SpatVector polygon ('Ditch Number 71' rect extent) as input
+p <- terra::as.polygons(y[1, ], ext = TRUE)
 z <- polygon_to_huc(p, layerid = 6)
+
 plot(z)
 plot(p, col = rgb(1, 0, 0, 0.5), add = TRUE)
 ```

@@ -1,10 +1,11 @@
 Package: huckster
 Type: Package
 Title: Very Simple Tools for Hawking Hydrologic Unit Boundaries
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: person(given="Andrew", family="Brown", email="andrew.g.brown@usda.gov", role = c("aut", "cre"))
 Maintainer: Andrew Brown <andrew.g.brown@usda.gov>
-Description: Provides tools for easily obtaining boundaries of hydrologic units and information based on Hydrologic Unit Codes ('HUC'). Hydrologic unit data are retrieved from the USGS NationalMap ArcGIS MapServer web services: <"https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/>.
+Description: Provides tools for easily obtaining boundaries of hydrologic units and information based on Hydrologic Unit Codes ('HUC'). 
+    Hydrologic unit data are retrieved from the U.S. Geological Survey 'NationalMap' REST API by default. This endpoint can be customized: <https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/>.
 License: CC0
 Language: en-US
 Encoding: UTF-8

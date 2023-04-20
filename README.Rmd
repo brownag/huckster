@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 
 The goal of {huckster} is to provide tools for easily obtaining boundaries of hydrologic units and other information based on Hydrologic Unit Codes ('HUC'). 
 
-Hydrologic unit data are retrieved from the U.S. Geological Survey 'NationalMap' REST API by default. This endpoint can be customized. <https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/>.
+Hydrologic unit data are retrieved from the U.S. Geological Survey 'NationalMap' REST API by default. This endpoint can be customized: \<https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/>.
 
 ## Installation
 
@@ -33,9 +33,9 @@ You can install the development version of {huckster} from [GitHub](https://gith
 remotes::install_github("brownag/huckster")
 ```
 
-## Example
+## Examples
 
-Here are some basic examples showing how to obtain hydrologic unit boundaries by ID, point, envelope, and polygon. 
+Here are some basic examples showing how to obtain hydrologic unit boundaries by ID (code), point, envelope, and polygon. 
 
 The default `layerid=5` corresponds to a "10-digit" HUC or "Watershed" level boundary.
 
@@ -43,20 +43,30 @@ The default `layerid=5` corresponds to a "10-digit" HUC or "Watershed" level bou
 library(huckster)
 library(terra)
 
-ids <- c("071000050101",  "071000050102",  "071000050103",  "071000050104")
+## HUC code input
+ids <- c("071000050101",  "071000050102",
+         "071000050103",  "071000050104")
 w <- id_to_huc(ids, layerid = 6)
+
 plot(w)
 
+## point input
 x <- point_to_huc(-94.0671, 43.026, layerid = 4)
+
 plot(x)
 
-# bounding box/envelope numeric input
+## SpatExtent bounding box/envelope input
 y <- envelope_to_huc(terra::ext(x))
+
+## equivalently using numeric bounds:
+# y <- envelope_to_huc(-94.150, 42.298, -93.636, 43.156)
+
 plot(y)
 
-# SpatVector polygon ('Ditch Number 71' rect extent) as input
-p <- as.polygons(y[1, ], ext = TRUE)
+## SpatVector polygon ('Ditch Number 71' rect extent) as input
+p <- terra::as.polygons(y[1, ], ext = TRUE)
 z <- polygon_to_huc(p, layerid = 6)
+
 plot(z)
 plot(p, col = rgb(1, 0, 0, 0.5), add = TRUE)
 ```

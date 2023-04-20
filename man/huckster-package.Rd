@@ -4,9 +4,13 @@
 \name{huckster-package}
 \alias{huckster}
 \alias{huckster-package}
+\alias{huckster_usgs_hydro_wbd_url}
 \title{huckster: Very Simple Tools for Hawking Hydrologic Unit Boundaries}
+\value{
+\code{huckster_usgs_hydro_wbd_url()}: returns the value of system environment variable \code{R_huckster_usgs_hydro_wbd_url}, R option \code{huckster.usgs_base_url} or the default value \code{"https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/"}.
+}
 \description{
-Provides tools for easily obtaining boundaries of hydrologic units and information based on Hydrologic Unit Codes ('HUC'). Hydrologic unit data are retrieved from the USGS NationalMap ArcGIS MapServer web services: <"https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/>.
+Provides tools for easily obtaining boundaries of hydrologic units and information based on Hydrologic Unit Codes ('HUC'). Hydrologic unit data are retrieved from the U.S. Geological Survey 'NationalMap' REST API by default. This endpoint can be customized: \url{https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/}.
 }
 \author{
 \strong{Maintainer}: Andrew Brown \email{andrew.g.brown@usda.gov}
