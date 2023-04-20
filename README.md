@@ -9,15 +9,17 @@
 <!-- badges: end -->
 
 The goal of {huckster} is to provide tools for easily obtaining
-boundaries of hydrologic units and information based on Hydrologic Unit
-Codes (‘HUC’). Hydrologic unit data are retrieved from the USGS
-NationalMap ArcGIS MapServer web services:
-\<“<https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/>\>.
+boundaries of hydrologic units and other information based on Hydrologic
+Unit Codes (‘HUC’).
+
+Hydrologic unit data are retrieved from the U.S. Geological Survey
+‘NationalMap’ REST API by default. This endpoint can be customized.
+<https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/>.
 
 ## Installation
 
 You can install the development version of {huckster} from
-[GitHub](https://github.com/) with:
+[GitHub](https://github.com/brownag/huckster) with:
 
 ``` r
 # install.packages("remotes")
@@ -27,8 +29,10 @@ remotes::install_github("brownag/huckster")
 ## Example
 
 Here are some basic examples showing how to obtain hydrologic unit
-boundaries by ID, point, envelope, and polygon. The default `layerid` is
-`5` which corresponds to a “10-digit” HUC.
+boundaries by ID, point, envelope, and polygon.
+
+The default `layerid=5` corresponds to a “10-digit” HUC or “Watershed”
+level boundary.
 
 ``` r
 library(huckster)
@@ -62,7 +66,7 @@ plot(y)
 
 ``` r
 
-# SpatVector polygon (Prairie Creek rect extent) as input
+# SpatVector polygon ('Ditch Number 71' rect extent) as input
 p <- as.polygons(y[1, ], ext = TRUE)
 z <- polygon_to_huc(p, layerid = 6)
 plot(z)
