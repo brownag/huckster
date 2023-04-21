@@ -51,7 +51,6 @@ id_to_huc <- function(x,
   do.call('rbind', res)
 }
 
-
 #' Intersect hydrologic unit boundaries at the specified level with a SpatVector containing points or X,Y coordinates
 #'
 #' Hydrologic unit boundaries are retrieved from the USGS NationalMap ArcGIS MapServer web services: `"https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/"`.
@@ -213,7 +212,6 @@ envelope_to_huc <-
   terra::vect(urx)
 }
 
-
 #' Intersect hydrologic unit boundaries at the specified level with a SpatVector containing polygons.
 #'
 #' Hydrologic unit boundaries are retrieved from the USGS NationalMap ArcGIS MapServer web services: `"https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/"`.
@@ -258,6 +256,9 @@ polygon_to_huc <-
       stop("`x` should be a `SpatVector` containing polygon geometries")
     }
 
+    # if the CRS has a defined code, use it as sr_in
+    sr_in <- .poly_crs(x, .default = sr_in)
+
     stopifnot(all(layerid %in% 0:8))
 
     if (length(layerid) != 1) {
@@ -268,8 +269,9 @@ polygon_to_huc <-
     gms <- paste0("[", paste0(sapply(
       split(gme, gme$geom), \(x) paste0(sprintf("[%s, %s]", x$x, x$y), collapse = ",")
     ), collapse = "],["), "]")
-    bse <- "{\"rings\":[%s],\"spatialReference\":{\"wkid\":4326}}"
-    in_geom <- utils::URLencode(sprintf(bse, gms), reserved = TRUE)
+    bse <- "{\"rings\":[%s],\"spatialReference\":{\"wkid\":%s}}"
+    in_geom <-
+      utils::URLencode(sprintf(bse, gms, sr_in), reserved = TRUE)
     queryurl <- paste0(base_url, layerid, "/query")
     urx <- paste0(
       queryurl,
@@ -282,5 +284,13 @@ polygon_to_huc <-
       "&f=geojson"
     )
     terra::vect(urx)
-  }
+}
 
+
+.poly_crs <- function(x, .default = 4326) {
+  sr_x <- terra::crs(x, describe = TRUE)$code
+  if (!is.null(sr_x) && !is.na(sr_x)) {
+    return(sr_x)
+  }
+  return(.default)
+}
