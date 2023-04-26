@@ -1,7 +1,7 @@
 Package: huckster
 Type: Package
 Title: Very Simple Tools for Hawking Hydrologic Unit Boundaries
-Version: 0.0.0.9001
+Version: 0.0.1
 Authors@R: person(given="Andrew", family="Brown", email="andrew.g.brown@usda.gov", role = c("aut", "cre"))
 Maintainer: Andrew Brown <andrew.g.brown@usda.gov>
 Description: Provides tools for easily obtaining boundaries of hydrologic units and information based on Hydrologic Unit Codes ('HUC'). 

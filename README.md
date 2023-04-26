@@ -31,19 +31,19 @@ remotes::install_github("brownag/huckster")
 Here are some basic examples showing how to obtain hydrologic unit
 boundaries by ID (code), point, envelope, and polygon.
 
-The default `layerid=5` corresponds to a “10-digit” HUC or “Watershed”
-level boundary.
+The default `layerid=5` corresponds to a “10-digit” HUC or “watershed”
+level boundary. See `huc_code()` for a system for encoding `layerid`
+from labels, code lengths or codes.
 
 ``` r
 library(huckster)
 library(terra)
-#> Warning: package 'terra' was built under R version 4.2.3
 #> terra 1.7.29
 
 ## HUC code input
 ids <- c("071000050101",  "071000050102",
          "071000050103",  "071000050104")
-w <- id_to_huc(ids, layerid = 6)
+w <- id_to_huc(ids, layer = "subwatershed")
 
 plot(w)
 ```
@@ -53,7 +53,7 @@ plot(w)
 ``` r
 
 ## point input
-x <- point_to_huc(-94.0671, 43.026, layerid = 4)
+x <- point_to_huc(-94.0671, 43.026, layer = "subbasin")
 
 plot(x)
 ```
@@ -77,7 +77,7 @@ plot(y)
 
 ## SpatVector polygon ('Ditch Number 71' rect extent) as input
 p <- terra::as.polygons(y[1, ], ext = TRUE)
-z <- polygon_to_huc(p, layerid = 6)
+z <- polygon_to_huc(p, layer = "subwatershed")
 
 plot(z)
 plot(p, col = rgb(1, 0, 0, 0.5), add = TRUE)
