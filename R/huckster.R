@@ -3,7 +3,8 @@
 #' Hydrologic unit boundaries are retrieved from the USGS NationalMap ArcGIS MapServer web services: `"https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/"`.
 #'
 #' @param x character. Hydrologic Unit IDs
-#' @param layerid numeric. `1:8` where `2*layerid` is equal to the number of digits in the Hydrologic Unit Code (HUC). Default: `5` for "HUC-10" watershed. See details.
+#' @param layer  One or more: labels, codes, or code lengths to convert to `layerid`. Default `"watershed"`, which is equivalent to "10-digit", "10" or any 10-digit code.
+#' @param layerid numeric. `1:8` where `2*layerid` is equal to the number of digits in the Hydrologic Unit Code (HUC). Default: `5` derived from `"watershed"` for "10-digit" hydrologic unit boundary. See details.
 #' @param base_url Default: `"https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/"`
 #' @details
 #' The levels of `layerid` correspond to the numeric codes for the following hydrologic units (HU):
@@ -21,11 +22,12 @@
 #' @examplesIf !inherits(requireNamespace("terra", quietly = TRUE), 'try-error')
 #' @examples
 #' \dontrun{
-#' x <- id_to_huc(c("071000050101", "071000050102", "071000050103", "071000050104"), layerid = 6)
+#' x <- id_to_huc(c("071000050101", "071000050102", "071000050103", "071000050104"))
 #' terra::plot(x)
 #' }
 id_to_huc <- function(x,
-                      layerid = 5,
+                      layer = x,
+                      layerid = huc_code(layer),
                       base_url = huckster_usgs_hydro_wbd_url()) {
 
   stopifnot(requireNamespace("terra"))
@@ -57,7 +59,8 @@ id_to_huc <- function(x,
 #'
 #' @param x A `SpatVector` object or `numeric` vector.
 #' @param y `NULL` (when x is a spatial object); otherwise a `numeric` vector equal in length to `x`
-#' @param layerid numeric. `1:8` where `2*layerid` is equal to the number of digits in the Hydrologic Unit Code (HUC). Default: `5` for "HUC-10" watershed. See details.
+#' @param layer  One or more: labels, codes, or code lengths to convert to `layerid`. Default `"watershed"`, which is equivalent to "10-digit", "10" or any 10-digit code.
+#' @param layerid numeric. `1:8` where `2*layerid` is equal to the number of digits in the Hydrologic Unit Code (HUC). Default: `5` derived from `"watershed"` for "10-digit" hydrologic unit boundary. See details.
 #' @param sr_in integer. Spatial Reference System of input (`x`, `y`) as specified with numeric code. Default: `4326` for `"EPSG:4326"`.
 #' @param sr_out integer. Spatial Reference System of result as specified with numeric code. Default: `sr_in`; equivalent to input.
 #' @param base_url Default: `"https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/"`
@@ -82,7 +85,8 @@ id_to_huc <- function(x,
 point_to_huc <-
   function(x,
            y = NULL,
-           layerid = 5,
+           layer = "watershed",
+           layerid = huc_code(layer),
            sr_in = 4326,
            sr_out = sr_in,
            base_url = huckster_usgs_hydro_wbd_url()) {
@@ -147,7 +151,8 @@ point_to_huc <-
 #'
 #' @param x A `SpatExtent` object (or object coercible to one) or `numeric` vector.
 #' @param ... Additional arguments are (in order) `ymin`, `xmax`, `ymax` when `x` is numeric (`xmin`).
-#' @param layerid numeric. `1:8` where `2*layerid` is equal to the number of digits in the Hydrologic Unit Code (HUC). Default: `5` for "HUC-10" watershed. See details.
+#' @param layer  One or more: labels, codes, or code lengths to convert to `layerid`. Default `"watershed"`, which is equivalent to "10-digit", "10" or any 10-digit code.
+#' @param layerid numeric. `1:8` where `2*layerid` is equal to the number of digits in the Hydrologic Unit Code (HUC). Default: `5` derived from `"watershed"` for "10-digit" hydrologic unit boundary. See details.
 #' @param sr_in integer. Spatial Reference System of input (`x`, `y`) as specified with numeric code. Default: `4326` for `"EPSG:4326"`.
 #' @param sr_out integer. Spatial Reference System of result as specified with numeric code. Default: `sr_in`; equivalent to input.
 #' @param base_url Default: `"https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/"`
@@ -167,12 +172,13 @@ point_to_huc <-
 #' @examplesIf !inherits(requireNamespace("terra", quietly = TRUE), 'try-error')
 #' @examples
 #' \dontrun{
-#' envelope_to_huc(-121, 36, -120, 37, layerid = 4)
+#' envelope_to_huc(-121, 36, -120, 37, layer = "subbasin")
 #' }
 envelope_to_huc <-
   function(x,
            ...,
-           layerid = 5,
+           layer = "watershed",
+           layerid = huc_code(layer),
            sr_in = 4326,
            sr_out = sr_in,
            base_url = huckster_usgs_hydro_wbd_url()) {
@@ -217,7 +223,8 @@ envelope_to_huc <-
 #' Hydrologic unit boundaries are retrieved from the USGS NationalMap ArcGIS MapServer web services: `"https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/"`.
 #'
 #' @param x character. WKT string.
-#' @param layerid numeric. `1:8` where `2*layerid` is equal to the number of digits in the Hydrologic Unit Code (HUC). Default: `5` for "HUC-10" watershed. See details.
+#' @param layer  One or more: labels, codes, or code lengths to convert to `layerid`. Default `"watershed"`, which is equivalent to "10-digit", "10" or any 10-digit code.
+#' @param layerid numeric. `1:8` where `2*layerid` is equal to the number of digits in the Hydrologic Unit Code (HUC). Default: `5` derived from `"watershed"` for "10-digit" hydrologic unit boundary. See details.
 #' @param sr_in integer. Spatial Reference System of input (`x`, `y`) as specified with numeric code. Default: `4326` for `"EPSG:4326"`.
 #' @param sr_out integer. Spatial Reference System of result as specified with numeric code. Default: `sr_in`; equivalent to input.
 #' @param base_url Default: `"https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/"`
@@ -241,11 +248,12 @@ envelope_to_huc <-
 #'           -121.35 37.555,-121.35 37.56,
 #'           -121.355 37.56))' |>
 #'   terra::vect(crs = "OGC:CRS84")
-#' polygon_to_huc(x, layerid = 6)
+#' polygon_to_huc(x, layer = "subwatershed")
 #' }
 polygon_to_huc <-
   function(x,
-           layerid = 5,
+           layer = "watershed",
+           layerid = huc_code(layer),
            sr_in = 4326,
            sr_out = sr_in,
            base_url = huckster_usgs_hydro_wbd_url()) {
@@ -293,4 +301,54 @@ polygon_to_huc <-
     return(sr_x)
   }
   return(.default)
+}
+
+#' Convert Labels, Hydrologic Unit Codes, or HUC Lengths to Layer IDs
+#'
+#' This function takes heterogeneous input and calculates the `layerid` required for creating the REST API requests for geometry.
+#'
+#' @param x One or more: labels, codes, or code lengths to convert to `layerid`
+#'
+#' @return integer
+#' @export
+#'
+#' @examples
+#'
+#' huc_code(c("subregion", "watershed",
+#'            "071000050101", "10-digit",
+#'            8, 12, 16))
+#'
+huc_code <- function(x) {
+  lbl <- c(
+    "region" = 1,
+    "subregion" = 2,
+    "basin" = 3,
+    "subbasin" = 4,
+    "watershed" = 5,
+    "subwatershed" = 6,
+    "2" = 1,
+    "4" = 2,
+    "6" = 3,
+    "8" = 4,
+    "10" = 5,
+    "12" = 6,
+    "14" = 7,
+    "16" = 8
+  )
+  # match labels e.g. "watershed"
+  #       code names e.g. "10-digit"
+  #       numeric values e.g. 14
+  #       codes e.g. "071000050101"
+  #
+  #   - first 3 via lookup table
+  #   - anything else as nchar(x)/2
+  m1 <- match(gsub("-digit", "",
+                   tolower(trimws(as.character(x))),
+                   fixed = TRUE), names(lbl))
+  idx1 <- which(!is.na(m1))
+  x[idx1] <- lbl[m1[idx1]]
+  idx2 <- setdiff(seq_along(x), idx1)
+
+  x[idx2] <- nchar(x[idx2]) / 2
+  as.integer(x)
 }

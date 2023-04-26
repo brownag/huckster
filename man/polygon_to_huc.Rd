@@ -6,7 +6,8 @@
 \usage{
 polygon_to_huc(
   x,
-  layerid = 5,
+  layer = "watershed",
+  layerid = huc_code(layer),
   sr_in = 4326,
   sr_out = sr_in,
   base_url = huckster_usgs_hydro_wbd_url()
@@ -15,7 +16,9 @@ polygon_to_huc(
 \arguments{
 \item{x}{character. WKT string.}
 
-\item{layerid}{numeric. \code{1:8} where \code{2*layerid} is equal to the number of digits in the Hydrologic Unit Code (HUC). Default: \code{5} for "HUC-10" watershed. See details.}
+\item{layer}{One or more: labels, codes, or code lengths to convert to \code{layerid}. Default \code{"watershed"}, which is equivalent to "10-digit", "10" or any 10-digit code.}
+
+\item{layerid}{numeric. \code{1:8} where \code{2*layerid} is equal to the number of digits in the Hydrologic Unit Code (HUC). Default: \code{5} derived from \code{"watershed"} for "10-digit" hydrologic unit boundary. See details.}
 
 \item{sr_in}{integer. Spatial Reference System of input (\code{x}, \code{y}) as specified with numeric code. Default: \code{4326} for \code{"EPSG:4326"}.}
 
@@ -51,6 +54,6 @@ x <- 'POLYGON((-121.355 37.56,-121.355 37.555,
           -121.35 37.555,-121.35 37.56,
           -121.355 37.56))' |>
   terra::vect(crs = "OGC:CRS84")
-polygon_to_huc(x, layerid = 6)
+polygon_to_huc(x, layer = "subwatershed")
 }
 }
